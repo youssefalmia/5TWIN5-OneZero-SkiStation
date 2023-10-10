@@ -1,7 +1,7 @@
 pipeline {
     agent any
-    environment{
-        registry= "$docker_repository"
+    environment {
+        registry= "fouratbendhafer11/5twin5-onezero-skistation"
         registryCredential = 'dockerhub'
         dockerImage = ''
     }
@@ -13,22 +13,30 @@ pipeline {
                 url: 'https://github.com/FouratBenDhafer99/5TWIN5-OneZero-SkiStation.git';
             }
         }
-
-        stage('Building our image') {
+        stage('MVN package') {
+            steps {
+                sh 'mvn -DskipTests clean package'
+            }
+        }
+        stage('Building Docker image') {
             steps {
                 script {
                     dockerImage = docker.build registry + ":$BUILD_NUMBER"
                 }
             }
         }
-
-        stage('Deploy our image') {
+        stage('Deploy docker image') {
             steps {
                 script {
                     docker.withRegistry( '', registryCredential ) {
                         dockerImage.push()
                     }
                 }
+            }
+        }
+        stage('Cleaning up') {
+            steps {
+                sh "docker rmi $registry:$BUILD_NUMBER"
             }
         }
     }
