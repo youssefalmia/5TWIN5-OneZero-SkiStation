@@ -9,8 +9,8 @@ pipeline {
         stage('Checkout GIT'){
             steps{
                 echo 'Pulling...';
-                git branch: 'main',
-                url: 'https://github.com/RayenBourguiba/Ski-Station-DevOps.git';
+                git branch: 'master',
+                url: 'https://github.com/FouratBenDhafer99/5TWIN5-OneZero-SkiStation.git';
             }
         }
 
