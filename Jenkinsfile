@@ -4,7 +4,6 @@ pipeline {
         registry= "youssefalmia/5twin5-g7-skistation"
         registryCredential = 'dockerhub'
         dockerImage = ''
-        sonarQubeScannerHome = tool name: 'SonarQube', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
     }
     stages{
         stage('Checkout GIT'){
@@ -21,9 +20,7 @@ pipeline {
         }
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('SonarQube') {
-                    sh "mvn sonar:sonar"
-                }
+                    sh "mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=sonar"
             }
         }
         stage('Building Docker image') {
