@@ -1,8 +1,17 @@
+import net.bytebuddy.dynamic.Nexus
+
 pipeline {
     agent any
     environment {
         registry= "youssefalmia/5twin5-g7-skistation"
         registryCredential = 'DockerHub'
+
+        NEXUS_VERSION = "nexus3"
+        NEXUS_PROTOCOL = "http"
+        NEXUS_URL = "http://192.168.100.2:8081"
+        NEXUS_REPOSITORY = "nexus-repo-skistation"
+        NEXUS_CREDENTIAL_ID = "nexus-user-credential"
+
         dockerImage = ''
     }
     stages{
@@ -16,6 +25,11 @@ pipeline {
         stage('MVN package') {
             steps {
                 sh 'mvn -DskipTests clean package'
+            }
+        }
+        stage('Unit Tests') {
+            steps {
+                sh 'mvn test'
             }
         }
         stage('SonarQube Analysis') {
@@ -37,6 +51,11 @@ pipeline {
                         dockerImage.push()
                     }
                 }
+            }
+        }
+        stage('Nexus Deployment') {
+            steps {
+                sh 'mvn deploy'
             }
         }
         stage('Cleaning up') {
