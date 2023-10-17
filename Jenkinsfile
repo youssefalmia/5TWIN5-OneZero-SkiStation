@@ -1,5 +1,3 @@
-import net.bytebuddy.dynamic.Nexus
-
 pipeline {
     agent any
     environment {
