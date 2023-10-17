@@ -1,3 +1,5 @@
+package tn.esprit.spring;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
