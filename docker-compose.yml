@@ -28,7 +28,7 @@ services:
 
   
   skier:
-    image: oumaima1115-5TWIN5-G7-skistation
+    image: oumaima1115/5twin5-onezero-skistation:latest
     restart: on-failure
     environment:
       - spring.datasource.url=jdbc:mysql://localhost:3306/stationSki?createDatabaseIfNotExist=true
