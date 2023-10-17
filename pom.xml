@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>tn.esprit.spring</groupId>
 	<artifactId>gestion-station-ski</artifactId>
-	<version>1.0</version>
+	<version>1.0.release</version>
 	<name>5TWIN5-OneZero-SkiStation</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
@@ -64,6 +64,10 @@
 		</dependency>
 
 	</dependencies>
+
+	<distributionManagement>
+		<downloadUrl>http://192.168.100.2:8081/repository/maven-releases/</downloadUrl>
+	</distributionManagement>
 
 	<build>
 		<finalName>5TWIN5-OneZero-SkiStation</finalName>
