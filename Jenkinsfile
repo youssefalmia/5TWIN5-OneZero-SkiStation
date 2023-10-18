@@ -9,7 +9,7 @@ pipeline {
         stage('Checkout GIT'){
             steps{
                 echo 'Pulling...';
-                git branch: 'master',
+                git branch: 'RayenBourguiba-5TWIN5-G7',
                 url: 'https://github.com/FouratBenDhafer99/5TWIN5-OneZero-SkiStation.git';
             }
         }
@@ -21,7 +21,7 @@ pipeline {
         stage('Building Docker image') {
             steps {
                 script {
-                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                    dockerImage = docker.build rayenbourguiba + ":$BUILD_NUMBER"
                 }
             }
         }
