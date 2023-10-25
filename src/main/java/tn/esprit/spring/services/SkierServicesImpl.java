@@ -49,6 +49,8 @@ public class SkierServicesImpl implements ISkierServices {
     public Skier assignSkierToSubscription(Long numSkier, Long numSubscription) {
         Skier skier = skierRepository.findById(numSkier).orElse(null);
         Subscription subscription = subscriptionRepository.findById(numSubscription).orElse(null);
+        if (skier == null || subscription == null)
+            return null;
         skier.setSubscription(subscription);
         return skierRepository.save(skier);
     }
@@ -80,6 +82,8 @@ public class SkierServicesImpl implements ISkierServices {
     public Skier assignSkierToPiste(Long numSkieur, Long numPiste) {
         Skier skier = skierRepository.findById(numSkieur).orElse(null);
         Piste piste = pisteRepository.findById(numPiste).orElse(null);
+        if (skier == null)
+            return null;
         try {
             skier.getPistes().add(piste);
         } catch (NullPointerException exception) {
