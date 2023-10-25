@@ -27,12 +27,12 @@ import java.util.List;
 @ExtendWith(MockitoExtension.class)
 public class PisteServicesImplTest {
 
-
-    @InjectMocks
-    private PisteServicesImpl pisteServices; // Use the actual service implementation
-
     @Mock
     private IPisteRepository pisteRepository;
+    @InjectMocks
+    private PisteServicesImpl pisteServices;
+
+
     @Test
     public void testRetrieveAllPistes() {
         // Mock the behavior of pisteRepository.findAll()

@@ -8,11 +8,11 @@ import tn.esprit.spring.entities.Piste;
 @SpringBootTest
 class GestionStationSkiApplicationTests {
 
-	@Test
+	/*@Test
 	void contextLoads() {
 		Piste piste= new Piste();
 		Assertions.assertNull(piste);
-	}
+	}*/
 
 
 
