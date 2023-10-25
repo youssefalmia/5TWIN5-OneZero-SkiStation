@@ -55,6 +55,7 @@
 		</dependency>
 	</dependencies>
 
+
 	<build>
 		<finalName>5TWIN5-OneZero-SkiStation</finalName>
 		<plugins>
@@ -72,5 +73,12 @@
 			</plugin>
 		</plugins>
 	</build>
+	<distributionManagement>
+		<repository>
+			<id>deploymentRepo</id>
+			<name>Nexus Repository</name>
+			<url>http://localhost:8081/repository/maven-releases/</url>
+		</repository>
+	</distributionManagement>
 
 </project>
