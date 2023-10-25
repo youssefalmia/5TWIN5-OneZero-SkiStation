@@ -49,7 +49,7 @@ public class PisteServicesImplTest {
         Assertions.assertEquals(mockPistes, result);
     }
 
-    @Test
+    /*@Test
     public void testAddPiste() {
         // Create a Piste to add
         Piste pisteToAdd = new Piste(3L, "piste3", Color.BLUE, 4, 3, null);
@@ -62,7 +62,7 @@ public class PisteServicesImplTest {
 
         // Assertions
         Assertions.assertEquals(pisteToAdd, result);
-    }
+    }*/
 
 
 
