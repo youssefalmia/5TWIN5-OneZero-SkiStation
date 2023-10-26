@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import tn.esprit.spring.DTO.SubscriptionDTO;
 import tn.esprit.spring.entities.Subscription;
 import tn.esprit.spring.entities.TypeSubscription;
 import tn.esprit.spring.services.ISubscriptionServices;
@@ -20,16 +21,21 @@ public class SubscriptionRestController {
 
     private final ISubscriptionServices subscriptionServices;
 
-    @Operation(description = "Add Subscription ")
+    @Operation(description = "Add Subscription")
     @PostMapping("/add")
-    public Subscription addSubscription(@RequestBody Subscription subscriptionRequest){
+    public SubscriptionDTO addSubscription(@RequestBody SubscriptionDTO subscriptionRequest) {
         Subscription subscription = new Subscription();
         subscription.setEndDate(subscriptionRequest.getEndDate());
         subscription.setStartDate(subscriptionRequest.getStartDate());
         subscription.setPrice(subscriptionRequest.getPrice());
         subscription.setTypeSub(subscriptionRequest.getTypeSub());
-        return  subscriptionServices.addSubscription(subscriptionRequest);
+
+        Subscription addedSubscription = subscriptionServices.addSubscription(subscription);
+        SubscriptionDTO addedSubscriptionDTO = subscriptionServices.convertToDTO(addedSubscription);
+
+        return addedSubscriptionDTO;
     }
+
     @Operation(description = "Retrieve Subscription by Id")
     @GetMapping("/get/{id-subscription}")
     public Subscription getById(@PathVariable("id-subscription") Long numSubscription){
@@ -42,21 +48,23 @@ public class SubscriptionRestController {
         return subscriptionServices.getSubscriptionByType(typeSubscription);
     }
 
-    @Operation(description = "Update Subscription ")
+    @Operation(description = "Update Subscription")
     @PutMapping("/update")
-    public Subscription updateSubscription(@RequestBody Subscription subscriptionRequest){
+    public SubscriptionDTO updateSubscription(@RequestBody SubscriptionDTO subscriptionRequest) {
         Long subscriptionId = subscriptionRequest.getNumSub();
         Subscription existingSubscription = subscriptionServices.getSubscriptionById(subscriptionId);
-
         if (existingSubscription == null) {
-            return subscriptionRequest;
+            return new SubscriptionDTO();
         }
         existingSubscription.setEndDate(subscriptionRequest.getEndDate());
         existingSubscription.setStartDate(subscriptionRequest.getStartDate());
         existingSubscription.setPrice(subscriptionRequest.getPrice());
         existingSubscription.setTypeSub(subscriptionRequest.getTypeSub());
-        return subscriptionServices.updateSubscription(existingSubscription);
+        Subscription updatedSubscription = subscriptionServices.updateSubscription(existingSubscription);
+        SubscriptionDTO updatedSubscriptionDTO = subscriptionServices.convertToDTO(updatedSubscription);
+        return updatedSubscriptionDTO;
     }
+
 
     @Operation(description = "Retrieve Subscriptions created between two dates")
     @GetMapping("/all/{date1}/{date2}")
