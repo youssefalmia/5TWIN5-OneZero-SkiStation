@@ -22,8 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@SpringBootTest
-//@TestMethodOrder(OrderAnnotation.class)
+//@SpringBootTest
+@TestMethodOrder(OrderAnnotation.class)
 @ExtendWith(MockitoExtension.class)
 public class PisteServicesImplTest {
 
