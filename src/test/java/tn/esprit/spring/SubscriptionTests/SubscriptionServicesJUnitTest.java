@@ -1,4 +1,4 @@
-package tn.esprit.spring;
+package tn.esprit.spring.SubscriptionTests;
 
 import org.junit.Before;
 import org.junit.Test;
