@@ -74,9 +74,6 @@ public class Subscription implements Serializable {
 	}
 
 	//////////////////CONSTRUCTORS//////////////////
-	public Subscription() {
-	}
-
 	public Subscription(Long numSub, LocalDate startDate, LocalDate endDate, Float price, TypeSubscription typeSub) {
 		this.numSub = numSub;
 		this.startDate = startDate;
@@ -84,4 +81,14 @@ public class Subscription implements Serializable {
 		this.price = price;
 		this.typeSub = typeSub;
 	}
+
+	public Subscription() {
+		this.numSub = 0L;
+		this.startDate = LocalDate.now();
+		this.endDate = LocalDate.now();
+		this.price = 0.0f;
+		this.typeSub = TypeSubscription.MONTHLY;
+	}
+
+
 }
