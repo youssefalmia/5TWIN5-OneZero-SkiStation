@@ -86,5 +86,4 @@ public class Subscription implements Serializable {
 		this(0L, LocalDate.now(), LocalDate.now(), 0.0f, TypeSubscription.MONTHLY);
 	}
 
-
 }
