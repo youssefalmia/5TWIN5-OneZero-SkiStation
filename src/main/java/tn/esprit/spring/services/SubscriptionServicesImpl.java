@@ -24,6 +24,11 @@ public class SubscriptionServicesImpl implements ISubscriptionServices{
     private ISkierRepository skierRepository;
 
     @Override
+    public List<Subscription> retrieveAllSubscriptions() {
+        return subscriptionRepository.findAll();
+    }
+
+    @Override
     public Subscription addSubscription(Subscription subscription) {
         switch (subscription.getTypeSub()) {
             case ANNUAL:

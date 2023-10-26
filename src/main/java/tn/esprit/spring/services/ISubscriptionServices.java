@@ -9,6 +9,7 @@ import tn.esprit.spring.entities.TypeSubscription;
 
 public interface ISubscriptionServices {
 
+	List<Subscription> retrieveAllSubscriptions();
 	Subscription addSubscription(Subscription subscription);
 
 	Subscription updateSubscription(Subscription subscription);
