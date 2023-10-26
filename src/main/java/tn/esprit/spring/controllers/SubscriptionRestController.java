@@ -31,9 +31,7 @@ public class SubscriptionRestController {
         subscription.setTypeSub(subscriptionRequest.getTypeSub());
 
         Subscription addedSubscription = subscriptionServices.addSubscription(subscription);
-        SubscriptionDTO addedSubscriptionDTO = subscriptionServices.convertToDTO(addedSubscription);
-
-        return addedSubscriptionDTO;
+        return subscriptionServices.convertToDTO(addedSubscription);
     }
 
     @Operation(description = "Retrieve Subscription by Id")
@@ -61,8 +59,7 @@ public class SubscriptionRestController {
         existingSubscription.setPrice(subscriptionRequest.getPrice());
         existingSubscription.setTypeSub(subscriptionRequest.getTypeSub());
         Subscription updatedSubscription = subscriptionServices.updateSubscription(existingSubscription);
-        SubscriptionDTO updatedSubscriptionDTO = subscriptionServices.convertToDTO(updatedSubscription);
-        return updatedSubscriptionDTO;
+        return subscriptionServices.convertToDTO(updatedSubscription);
     }
 
 
