@@ -60,6 +60,12 @@ public class SubscriptionServicesImpl implements ISubscriptionServices{
     }
 
     @Override
+    public Subscription getSubscriptionById(Long id) {
+        return subscriptionRepository.findById(id).orElse(null);
+    }
+
+
+    @Override
     public List<Subscription> retrieveSubscriptionsByDates(LocalDate startDate, LocalDate endDate) {
         return subscriptionRepository.getSubscriptionsByStartDateBetween(startDate, endDate);
     }
