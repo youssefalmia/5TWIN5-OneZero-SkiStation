@@ -83,11 +83,7 @@ public class Subscription implements Serializable {
 	}
 
 	public Subscription() {
-		this.numSub = 0L;
-		this.startDate = LocalDate.now();
-		this.endDate = LocalDate.now();
-		this.price = 0.0f;
-		this.typeSub = TypeSubscription.MONTHLY;
+		this(0L, LocalDate.now(), LocalDate.now(), 0.0f, TypeSubscription.MONTHLY);
 	}
 
 
