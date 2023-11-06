@@ -14,7 +14,7 @@ services:
       - db:/var/lib/mysqldb
 
   spring_app:
-    image: tahersn/skistation:latest
+    image: tahersn/tahersnoussi-5twin5-g5-skistation:${IMAGE_TAG}
     restart: on-failure
     environment:
       - spring.datasource.url=jdbc:mysql://mysqldb:3306/stationSki?createDatabaseIfNotExist=true
