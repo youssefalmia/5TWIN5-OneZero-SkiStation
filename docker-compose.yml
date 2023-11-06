@@ -15,9 +15,10 @@ services:
 
   spring_app:
     image: tahersn/tahersnoussi-5twin5-g5-skistation:${IMAGE_TAG}
+    container_name: spring_app
     restart: on-failure
     environment:
-      - spring.datasource.url=jdbc:mysql://mysqldb:3306/stationSki?createDatabaseIfNotExist=true
+      - spring.datasource.url=jdbc:mysql://mysqldb:3306/stationSki?autoReconnect=true&useSSL=false
       - spring.datasource.username=root
       - spring.datasource.password=
     ports:
