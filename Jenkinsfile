@@ -38,7 +38,7 @@ pipeline {
         stage('Code Coverage and SonarQube Analysis') {
             steps {
                 sh 'mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install'
-                sh 'mvn sonar:sonar'
+                sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=sonar'
             }
         }
         stage('Building Docker image') {
