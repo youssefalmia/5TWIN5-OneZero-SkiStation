@@ -59,7 +59,7 @@ pipeline {
         }
         stage('Nexus Deployment') {
             steps {
-                sh 'mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::http://192.168.100.2:8081/repository/maven-releases/'
+                sh 'mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::http://192.168.100.2:8081/repository/maven-snapshots/'
             }
         }
         stage('Cleaning up') {
