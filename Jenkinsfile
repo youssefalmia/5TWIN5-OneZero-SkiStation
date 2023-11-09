@@ -16,7 +16,7 @@ pipeline {
         stage('Checkout GIT'){
             steps{
                 echo 'Pulling...';
-                git branch: 'YoussefALMIA-5TWIN5-G7',
+                git branch: 'master',
                 url: 'https://github.com/FouratBenDhafer99/5TWIN5-OneZero-SkiStation';
             }
         }
