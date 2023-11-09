@@ -30,11 +30,6 @@ pipeline {
                 sh 'mvn test'
             }
         }
-//        stage('SonarQube Analysis') {
-//            steps {
-//                    sh "mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=sonar"
-//            }
-//        }
         stage('Code Coverage and SonarQube Analysis') {
             steps {
                 sh 'mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install'
@@ -59,7 +54,16 @@ pipeline {
         }
         stage('Nexus Deployment') {
             steps {
-                sh 'mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::http://192.168.100.2:8081/repository/maven-snapshots/'
+                script {
+                    def repositoryUrl = ''
+                    if (isSnapshot()) {
+                        repositoryUrl = "${NEXUS_URL}/repository/maven-snapshots/"
+                    } else {
+                        repositoryUrl = "${NEXUS_URL}/repository/maven-releases/"
+                    }
+
+                    sh "mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::${repositoryUrl}"
+                }
             }
         }
         stage('Cleaning up') {
