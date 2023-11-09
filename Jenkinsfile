@@ -77,3 +77,7 @@ pipeline {
         }
     }
 }
+
+def isSnapshot() {
+    return sh(script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout', returnStdout: true).trim().endsWith('-SNAPSHOT')
+}
