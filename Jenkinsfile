@@ -1,16 +1,23 @@
 pipeline {
     agent any
     environment {
-        registry= "fouratbendhafer11/5twin5-onezero-skistation"
-        registryCredential = 'dockerhub'
+        registry= "youssefalmia/5twin5-g7-skistation"
+        registryCredential = 'DockerHub'
+
+        NEXUS_VERSION = "nexus3"
+        NEXUS_PROTOCOL = "http"
+        NEXUS_URL = "http://192.168.100.2:8081"
+        NEXUS_REPOSITORY = "nexus-repo-skistation"
+        NEXUS_CREDENTIAL_ID = "nexus-user-credential"
+
         dockerImage = ''
     }
     stages{
         stage('Checkout GIT'){
             steps{
                 echo 'Pulling...';
-                git branch: 'master',
-                url: 'https://github.com/FouratBenDhafer99/5TWIN5-OneZero-SkiStation.git';
+                git branch: 'YoussefALMIA-5TWIN5-G7',
+                url: 'https://github.com/FouratBenDhafer99/5TWIN5-OneZero-SkiStation';
             }
         }
         stage('MVN package') {
@@ -18,10 +25,26 @@ pipeline {
                 sh 'mvn -DskipTests clean package'
             }
         }
+        stage('Unit Tests') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+//        stage('SonarQube Analysis') {
+//            steps {
+//                    sh "mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=sonar"
+//            }
+//        }
+        stage('Code Coverage and SonarQube Analysis') {
+            steps {
+                sh 'mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install'
+                sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=sonar'
+            }
+        }
         stage('Building Docker image') {
             steps {
                 script {
-                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                    dockerImage = docker.build rayenbourguiba + ":$BUILD_NUMBER"
                 }
             }
         }
@@ -32,6 +55,11 @@ pipeline {
                         dockerImage.push()
                     }
                 }
+            }
+        }
+        stage('Nexus Deployment') {
+            steps {
+                sh 'mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::http://192.168.100.2:8081/repository/maven-snapshots/'
             }
         }
         stage('Cleaning up') {
