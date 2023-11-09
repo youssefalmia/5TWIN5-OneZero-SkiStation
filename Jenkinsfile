@@ -61,8 +61,12 @@ pipeline {
                     } else {
                         repositoryUrl = "${NEXUS_URL}/repository/maven-releases/"
                     }
-
-                    sh "mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::${repositoryUrl}"
+                    try {
+                        sh "mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::${repositoryUrl}"
+                    } catch (Exception e) {
+                        currentBuild.result = 'FAILURE'
+                        error("Maven deploy failed: ${e.message}")
+                    }
                 }
             }
         }
