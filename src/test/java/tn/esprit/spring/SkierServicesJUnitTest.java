@@ -9,6 +9,7 @@ import tn.esprit.spring.entities.*;
 import tn.esprit.spring.repositories.*;
 import tn.esprit.spring.services.*;
 
+import java.time.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,12 +36,17 @@ public class SkierServicesJUnitTest {
         List<Skier> result = skierServices.retrieveAllSkiers();
         assertEquals(skiers, result);
     }
-
     @Test
     public void testAddSkier() {
         Skier skier = new Skier();
         when(skierRepository.save(skier)).thenReturn(skier);
+
+        Subscription sb = new Subscription(1L, LocalDate.now(), LocalDate.now().plusMonths(6), 99.99f, TypeSubscription.MONTHLY);
+        skier.setSubscription(sb);
+
+
         Skier result = skierServices.addSkier(skier);
+
         assertEquals(skier, result);
     }
 

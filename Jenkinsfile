@@ -44,7 +44,7 @@ pipeline {
         stage('Building Docker image') {
             steps {
                 script {
-                    dockerImage = docker.build rayenbourguiba + ":$BUILD_NUMBER"
+                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
                 }
             }
         }
