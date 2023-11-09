@@ -22,8 +22,13 @@ public class SubscriptionRestController {
 
     @Operation(description = "Add Subscription ")
     @PostMapping("/add")
-    public Subscription addSubscription(@RequestBody Subscription subscription){
-        return  subscriptionServices.addSubscription(subscription);
+    public Subscription addSubscription(@RequestBody Subscription subscriptionRequest){
+        Subscription subscription = new Subscription();
+        subscription.setEndDate(subscriptionRequest.getEndDate());
+        subscription.setStartDate(subscriptionRequest.getStartDate());
+        subscription.setPrice(subscriptionRequest.getPrice());
+        subscription.setTypeSub(subscriptionRequest.getTypeSub());
+        return  subscriptionServices.addSubscription(subscriptionRequest);
     }
     @Operation(description = "Retrieve Subscription by Id")
     @GetMapping("/get/{id-subscription}")
@@ -36,11 +41,23 @@ public class SubscriptionRestController {
     public Set<Subscription> getSubscriptionsByType(@PathVariable("typeSub")TypeSubscription typeSubscription){
         return subscriptionServices.getSubscriptionByType(typeSubscription);
     }
+
     @Operation(description = "Update Subscription ")
     @PutMapping("/update")
-    public Subscription updateSubscription(@RequestBody Subscription subscription){
-        return  subscriptionServices.updateSubscription(subscription);
+    public Subscription updateSubscription(@RequestBody Subscription subscriptionRequest){
+        Long subscriptionId = subscriptionRequest.getNumSub();
+        Subscription existingSubscription = subscriptionServices.getSubscriptionById(subscriptionId);
+
+        if (existingSubscription == null) {
+            return subscriptionRequest;
+        }
+        existingSubscription.setEndDate(subscriptionRequest.getEndDate());
+        existingSubscription.setStartDate(subscriptionRequest.getStartDate());
+        existingSubscription.setPrice(subscriptionRequest.getPrice());
+        existingSubscription.setTypeSub(subscriptionRequest.getTypeSub());
+        return subscriptionServices.updateSubscription(existingSubscription);
     }
+
     @Operation(description = "Retrieve Subscriptions created between two dates")
     @GetMapping("/all/{date1}/{date2}")
     public List<Subscription> getSubscriptionsByDates(@PathVariable("date1") LocalDate startDate,

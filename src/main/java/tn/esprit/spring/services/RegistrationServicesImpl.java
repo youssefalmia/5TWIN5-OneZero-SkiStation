@@ -33,6 +33,8 @@ public class RegistrationServicesImpl implements  IRegistrationServices{
     public Registration assignRegistrationToCourse(Long numRegistration, Long numCourse) {
         Registration registration = registrationRepository.findById(numRegistration).orElse(null);
         Course course = courseRepository.findById(numCourse).orElse(null);
+        if (registration == null || course == null)
+            return null;
         registration.setCourse(course);
         return registrationRepository.save(registration);
     }
@@ -43,9 +45,8 @@ public class RegistrationServicesImpl implements  IRegistrationServices{
         Skier skier = skierRepository.findById(numSkieur).orElse(null);
         Course course = courseRepository.findById(numCours).orElse(null);
 
-        if (skier == null || course == null) {
+        if (skier == null || course == null)
             return null;
-        }
 
         if(registrationRepository.countDistinctByNumWeekAndSkier_NumSkierAndCourse_NumCourse(registration.getNumWeek(), skier.getNumSkier(), course.getNumCourse()) >=1){
             log.info("Sorry, you're already register to this course of the week :" + registration.getNumWeek());
@@ -54,7 +55,16 @@ public class RegistrationServicesImpl implements  IRegistrationServices{
 
         int ageSkieur = Period.between(skier.getDateOfBirth(), LocalDate.now()).getYears();
         log.info("Age " + ageSkieur);
+        return assignRegistrationBasedOnCourseType(registration, skier, course, ageSkieur);
 
+    }
+    private Registration assignRegistration (Registration registration, Skier skier, Course course){
+        registration.setSkier(skier);
+        registration.setCourse(course);
+        return registrationRepository.save(registration);
+    }
+
+    private Registration assignRegistrationBasedOnCourseType(Registration registration, Skier skier, Course course, int ageSkieur) {
         switch (course.getTypeCourse()) {
             case INDIVIDUAL:
                 log.info("add without tests");
@@ -70,8 +80,7 @@ public class RegistrationServicesImpl implements  IRegistrationServices{
                         log.info("Full Course ! Please choose another week to register !");
                         return null;
                     }
-                }
-                else{
+                } else{
                     log.info("Sorry, your age doesn't allow you to register for this course ! \n Try to Register to a Collective Adult Course...");
                 }
                 break;
@@ -90,14 +99,7 @@ public class RegistrationServicesImpl implements  IRegistrationServices{
                 log.info("Sorry, your age doesn't allow you to register for this course ! \n Try to Register to a Collective Child Course...");
         }
         return registration;
-
     }
-    private Registration assignRegistration (Registration registration, Skier skier, Course course){
-        registration.setSkier(skier);
-        registration.setCourse(course);
-        return registrationRepository.save(registration);
-    }
-
     @Override
     public List<Integer> numWeeksCourseOfInstructorBySupport(Long numInstructor, Support support) {
         return registrationRepository.numWeeksCourseOfInstructorBySupport(numInstructor, support);

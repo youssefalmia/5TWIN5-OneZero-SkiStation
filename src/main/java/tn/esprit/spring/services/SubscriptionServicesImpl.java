@@ -24,6 +24,11 @@ public class SubscriptionServicesImpl implements ISubscriptionServices{
     private ISkierRepository skierRepository;
 
     @Override
+    public List<Subscription> retrieveAllSubscriptions() {
+        return subscriptionRepository.findAll();
+    }
+
+    @Override
     public Subscription addSubscription(Subscription subscription) {
         switch (subscription.getTypeSub()) {
             case ANNUAL:
@@ -53,6 +58,12 @@ public class SubscriptionServicesImpl implements ISubscriptionServices{
     public Set<Subscription> getSubscriptionByType(TypeSubscription type) {
         return subscriptionRepository.findByTypeSubOrderByStartDateAsc(type);
     }
+
+    @Override
+    public Subscription getSubscriptionById(Long id) {
+        return subscriptionRepository.findById(id).orElse(null);
+    }
+
 
     @Override
     public List<Subscription> retrieveSubscriptionsByDates(LocalDate startDate, LocalDate endDate) {
