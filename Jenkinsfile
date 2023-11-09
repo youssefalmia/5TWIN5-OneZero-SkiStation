@@ -76,6 +76,22 @@ pipeline {
             }
         }
     }
+    post {
+        success {
+            emailext(
+                    subject: "Pipeline Success: 5TWIN5-OneZero-SkiStation",
+                    body: "Congratulations! The pipeline executed successfully.",
+                    to: "almia.youssef2@gmail.com"
+            )
+        }
+        failure {
+            emailext(
+                    subject: "Pipeline Failure: 5TWIN5-OneZero-SkiStation",
+                    body: "Oops! Something went wrong during the pipeline execution. Please check the Jenkins logs for more details.",
+                    to: "almia.youssef2@gmail.com"
+            )
+        }
+    }
 }
 
 def isSnapshot() {
