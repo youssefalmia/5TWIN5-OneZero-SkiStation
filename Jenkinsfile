@@ -17,7 +17,7 @@ pipeline {
             steps{
                 echo 'Pulling...';
                 git branch: 'master',
-                url: 'https://github.com/FouratBenDhafer99/5TWIN5-OneZero-SkiStation';
+                url: 'https://github.com/youssefalmia/5TWIN5-OneZero-SkiStation';
             }
         }
         stage('MVN package') {
