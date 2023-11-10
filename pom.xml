@@ -54,7 +54,12 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
+	<distributionManagement>
+	        <repository>
+	            <id>deploymentRepo</id>
+	            <url>http://192.168.100.2:8081/repository/maven-releases/</url>
+	        </repository>
+	    </distributionManagement>
 	<build>
 		<finalName>5TWIN5-OneZero-SkiStation</finalName>
 		<plugins>
