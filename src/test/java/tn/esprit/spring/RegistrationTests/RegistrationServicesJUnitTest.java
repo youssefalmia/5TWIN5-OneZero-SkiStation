@@ -5,10 +5,7 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import tn.esprit.spring.entities.Course;
-import tn.esprit.spring.entities.Instructor;
-import tn.esprit.spring.entities.Registration;
-import tn.esprit.spring.entities.Skier;
+import tn.esprit.spring.entities.*;
 import tn.esprit.spring.repositories.ICourseRepository;
 import tn.esprit.spring.repositories.IInstructorRepository;
 import tn.esprit.spring.repositories.IRegistrationRepository;
@@ -16,7 +13,9 @@ import tn.esprit.spring.repositories.ISkierRepository;
 import tn.esprit.spring.services.InstructorServicesImpl;
 import tn.esprit.spring.services.RegistrationServicesImpl;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,21 +42,17 @@ public class RegistrationServicesJUnitTest {
 
     @Test
     public void testAddRegistrationAndAssignToSkier() {
-        // Arrange
         Long skierId = 1L;
         Skier skier = new Skier();
         skier.setNumSkier(skierId);
 
         Registration registration = new Registration();
-        registration.setSkier(null); // Skier not assigned yet
+        registration.setSkier(null);
 
         when(skierRepository.findById(skierId)).thenReturn(java.util.Optional.ofNullable(skier));
         when(registrationRepository.save(registration)).thenReturn(registration);
-
-        // Act
         Registration result = registrationServices.addRegistrationAndAssignToSkier(registration, skierId);
 
-        // Assert
         assertNotNull(result);
         assertEquals(skier, result.getSkier());
 
@@ -65,16 +60,71 @@ public class RegistrationServicesJUnitTest {
 
     @Test
     public void testAddRegistrationAndAssignToSkierSkierNotFound() {
-        // Arrange
         Long skierId = 1L;
-
-        // Simulate skier not found in the repository
         when(skierRepository.findById(skierId)).thenReturn(java.util.Optional.empty());
 
         Registration result = registrationServices.addRegistrationAndAssignToSkier(new Registration(), skierId);
 
-        // Act and Assert
         assertNull(result);
+    }
+
+    @Test
+    public void testAssignRegistrationToCourse() {
+        Long registrationId = 1L;
+        Long courseId = 2L;
+        Registration registration = new Registration();
+        registration.setNumRegistration(registrationId);
+
+        Course course = new Course();
+        course.setNumCourse(courseId);
+
+        when(registrationRepository.findById(registrationId)).thenReturn(java.util.Optional.ofNullable(registration));
+        when(courseRepository.findById(courseId)).thenReturn(java.util.Optional.ofNullable(course));
+        when(registrationRepository.save(registration)).thenReturn(registration);
+        Registration result = registrationServices.assignRegistrationToCourse(registrationId, courseId);
+        assertNotNull(result);
+        assertEquals(course, result.getCourse());
+    }
+
+    @Test
+    public void testAssignRegistrationToCourseRegistrationNotFound() {
+        Long registrationId = 1L;
+        Long courseId = 2L;
+        when(registrationRepository.findById(registrationId)).thenReturn(java.util.Optional.empty());
+        Registration result = registrationServices.assignRegistrationToCourse(registrationId, courseId);
+        assertNull(result);
+    }
+
+    @Test
+    public void testAssignRegistrationToCourseCourseNotFound() {
+        Long registrationId = 1L;
+        Long courseId = 2L;
+        Registration registration = new Registration();
+        registration.setNumRegistration(registrationId);
+        when(registrationRepository.findById(registrationId)).thenReturn(java.util.Optional.ofNullable(registration));
+        when(courseRepository.findById(courseId)).thenReturn(java.util.Optional.empty());
+        Registration result = registrationServices.assignRegistrationToCourse(registrationId, courseId);
+        assertNull(result);
+    }
+
+
+    @Test
+    void testAddRegistrationAndAssignToSkierAndCourse() {
+        Long numSkier = 1L;
+        Long numCourse = 2L;
+
+        Course course = new Course(1L, 2, TypeCourse.INDIVIDUAL, Support.SKI, 100.0f, 3, new HashSet<>());
+        Skier skier = new Skier(1L, "John", "Doe", LocalDate.of(1990, 5, 15), "City", new Subscription(), new HashSet<>(), new HashSet<>());
+        Registration registration = new Registration(1L, 2, skier, course);
+
+
+        when(skierRepository.findById(numSkier)).thenReturn(Optional.of(skier));
+        when(courseRepository.findById(numCourse)).thenReturn(Optional.of(course));
+        when(registrationRepository.countDistinctByNumWeekAndSkier_NumSkierAndCourse_NumCourse(1, skier.getNumSkier(), course.getNumCourse())).thenReturn(0L);
+
+        Registration result = registrationServices.addRegistrationAndAssignToSkierAndCourse(registration, numSkier, numCourse);
+
+        assertNotNull(result);
     }
 
 }
