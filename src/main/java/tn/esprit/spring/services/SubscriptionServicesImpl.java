@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import tn.esprit.spring.DTO.SubscriptionDTO;
 import tn.esprit.spring.entities.Skier;
 import tn.esprit.spring.entities.Subscription;
 import tn.esprit.spring.entities.TypeSubscription;
@@ -22,6 +23,11 @@ public class SubscriptionServicesImpl implements ISubscriptionServices{
     private ISubscriptionRepository subscriptionRepository;
 
     private ISkierRepository skierRepository;
+
+    @Override
+    public List<Subscription> retrieveAllSubscriptions() {
+        return subscriptionRepository.findAll();
+    }
 
     @Override
     public Subscription addSubscription(Subscription subscription) {
@@ -55,8 +61,24 @@ public class SubscriptionServicesImpl implements ISubscriptionServices{
     }
 
     @Override
+    public Subscription getSubscriptionById(Long id) {
+        return subscriptionRepository.findById(id).orElse(null);
+    }
+
+
+    @Override
     public List<Subscription> retrieveSubscriptionsByDates(LocalDate startDate, LocalDate endDate) {
         return subscriptionRepository.getSubscriptionsByStartDateBetween(startDate, endDate);
+    }
+
+    @Override
+    public SubscriptionDTO convertToDTO(Subscription subscription) {
+        SubscriptionDTO dto = new SubscriptionDTO();
+        dto.setStartDate(subscription.getStartDate());
+        dto.setEndDate(subscription.getEndDate());
+        dto.setPrice(subscription.getPrice());
+        dto.setTypeSub(subscription.getTypeSub());
+        return dto;
     }
 
     @Override
