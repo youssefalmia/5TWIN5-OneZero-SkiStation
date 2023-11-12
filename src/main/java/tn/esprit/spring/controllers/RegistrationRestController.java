@@ -4,6 +4,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import tn.esprit.spring.dto.InstructorDTO;
+import tn.esprit.spring.dto.RegistrationDTO;
+import tn.esprit.spring.entities.Instructor;
 import tn.esprit.spring.entities.Registration;
 import tn.esprit.spring.entities.Support;
 import tn.esprit.spring.services.IRegistrationServices;
@@ -19,10 +22,10 @@ public class RegistrationRestController {
 
     @Operation(description = "Add Registration and Assign to Skier")
     @PutMapping("/addAndAssignToSkier/{numSkieur}")
-    public Registration addAndAssignToSkier(@RequestBody Registration registration,
+    public Registration addAndAssignToSkier(@RequestBody RegistrationDTO registration,
                                                      @PathVariable("numSkieur") Long numSkieur)
     {
-        return  registrationServices.addRegistrationAndAssignToSkier(registration,numSkieur);
+        return  registrationServices.addRegistrationAndAssignToSkier(convertToRegistration(registration),numSkieur);
     }
     @Operation(description = "Assign Registration to Course")
     @PutMapping("/assignToCourse/{numRegis}/{numSkieur}")
@@ -34,11 +37,11 @@ public class RegistrationRestController {
 
     @Operation(description = "Add Registration and Assign to Skier and Course")
     @PutMapping("/addAndAssignToSkierAndCourse/{numSkieur}/{numCourse}")
-    public Registration addAndAssignToSkierAndCourse(@RequestBody Registration registration,
+    public Registration addAndAssignToSkierAndCourse(@RequestBody RegistrationDTO registrationDTO,
                                                      @PathVariable("numSkieur") Long numSkieur,
                                                      @PathVariable("numCourse") Long numCourse)
     {
-        return  registrationServices.addRegistrationAndAssignToSkierAndCourse(registration,numSkieur,numCourse);
+        return  registrationServices.addRegistrationAndAssignToSkierAndCourse(convertToRegistration(registrationDTO),numSkieur,numCourse);
     }
 
     @Operation(description = "Numbers of the weeks when an instructor has given lessons in a given support")
@@ -46,5 +49,15 @@ public class RegistrationRestController {
     public List<Integer> numWeeksCourseOfInstructorBySupport(@PathVariable("numInstructor")Long numInstructor,
                                                                   @PathVariable("support") Support support) {
         return registrationServices.numWeeksCourseOfInstructorBySupport(numInstructor,support);
+    }
+
+    private Registration convertToRegistration(RegistrationDTO registrationDTO) {
+        Registration registration= new Registration();
+        registration.setNumRegistration(registrationDTO.getNumRegistration());
+        registration.setSkier(registrationDTO.getSkier());
+        registration.setCourse(registrationDTO.getCourse());
+        registration.setNumWeek(registrationDTO.getNumWeek());
+
+        return registration;
     }
 }

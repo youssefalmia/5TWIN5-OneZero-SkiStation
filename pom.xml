@@ -70,39 +70,6 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-    <!--Todo Youssef -->
-<!--    <distributionManagement>-->
-<!--        <repository>-->
-<!--            <id>your-repository-id</id>-->
-<!--            <url>http://192.168.100.2:8081/repository/maven-releases/</url>-->
-<!--        </repository>-->
-<!--    </distributionManagement>-->
-
-    <!--    todo Taher -->
-    <!--    <distributionManagement>-->
-    <!--        <repository>-->
-    <!--            <id>deploymentRepo</id>-->
-    <!--            <name>Nexus Repository</name>-->
-    <!--            <url>http://localhost:8081/repository/maven-releases/</url>-->
-    <!--        </repository>-->
-    <!--    </distributionManagement>-->
-    <!-- todo rayen -->
-    <!--    <distributionManagement>-->
-    <!--        <repository>-->
-    <!--            <id>nexus</id>-->
-    <!--            <name>Releases</name>-->
-    <!--            <url>http://172.10.0.140:8081/repository/maven-releases</url>-->
-    <!--        </repository>-->
-    <!--        <snapshotRepository>-->
-    <!--            <id>nexus</id>-->
-    <!--            <name>Snapshot</name>-->
-    <!--            <url>http://172.10.0.140:8081/repository/maven-snapshots</url>-->
-    <!--        </snapshotRepository>-->
-    <!--    </distributionManagement> -->
-    <!-- todo Oumaima -->
-    <!--    <distributionManagement>-->
-    <!--        <downloadUrl>http://192.168.33.10:8081/repository/maven-releases/</downloadUrl>-->
-    <!--    </distributionManagement>-->
 
     <distributionManagement>
     <repository>
