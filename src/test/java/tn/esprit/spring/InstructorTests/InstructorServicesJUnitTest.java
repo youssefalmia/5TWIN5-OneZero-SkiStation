@@ -1,7 +1,7 @@
 package tn.esprit.spring.InstructorTests;
 
-import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.Before;
+import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.Mockito.when;
-
+import static org.junit.Assert.*;
 
 public class InstructorServicesJUnitTest {
 
@@ -29,7 +29,7 @@ public class InstructorServicesJUnitTest {
     @Mock
     private ICourseRepository courseRepository;
 
-    @BeforeAll()
+    @Before()
     public void init() {
         MockitoAnnotations.initMocks(this);
     }
@@ -39,7 +39,7 @@ public class InstructorServicesJUnitTest {
         List<Instructor> instructors = new ArrayList<>();
         when(instructorRepository.findAll()).thenReturn(instructors);
         List<Instructor> result = instructorServices.retrieveAllInstructors();
-        Assertions.assertEquals(instructors, result);
+        assertEquals(instructors, result);
     }
 
     @Test
@@ -47,7 +47,7 @@ public class InstructorServicesJUnitTest {
         Instructor instructor = new Instructor();
         when(instructorRepository.save(instructor)).thenReturn(instructor);
         Instructor result = instructorServices.addInstructor(instructor);
-        Assertions.assertEquals(instructor, result);
+        assertEquals(instructor, result);
     }
 
     @Test
@@ -55,7 +55,7 @@ public class InstructorServicesJUnitTest {
         Instructor instructor = new Instructor();
         when(instructorRepository.save(instructor)).thenReturn(instructor);
         Instructor result = instructorServices.updateInstructor(instructor);
-        Assertions.assertEquals(instructor, result);
+        assertEquals(instructor, result);
     }
 
     @Test
@@ -64,7 +64,7 @@ public class InstructorServicesJUnitTest {
         Instructor instructor = new Instructor();
         when(instructorRepository.findById(id)).thenReturn(Optional.of(instructor));
         Instructor result = instructorServices.retrieveInstructor(id);
-        Assertions.assertEquals(instructor, result);
+        assertEquals(instructor, result);
     }
 
     @Test
@@ -80,10 +80,10 @@ public class InstructorServicesJUnitTest {
         Instructor result = instructorServices.addInstructorAndAssignToCourse(instructor, numCourse);
 
         // Assertions
-        Assertions.assertNotNull(result);
-        Assertions.assertEquals(instructor, result);
-        Assertions.assertEquals(1, instructor.getCourses().size());
-        Assertions.assertTrue(instructor.getCourses().contains(course));
+        assertNotNull(result);
+        assertEquals(instructor, result);
+        assertEquals(1, instructor.getCourses().size());
+        assertTrue(instructor.getCourses().contains(course));
 
     }
 
