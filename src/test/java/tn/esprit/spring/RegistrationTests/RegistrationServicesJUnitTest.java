@@ -109,7 +109,7 @@ public class RegistrationServicesJUnitTest {
 
 
     @Test
-    void testAddRegistrationAndAssignToSkierAndCourse() {
+    public void testAddRegistrationAndAssignToSkierAndCourse() {
         Long numSkier = 1L;
         Long numCourse = 2L;
 
