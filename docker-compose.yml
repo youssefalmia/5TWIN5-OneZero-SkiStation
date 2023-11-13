@@ -17,7 +17,7 @@ services:
       - /home/mysql/data:/var/lib/mysql
 
   spring_app:
-    image: fouratbendhafer11/5twin5-onezero-skistation:latest
+    image: youssefalmia/5twin5-g7-skistation:latest
     container_name: SkiStation
     restart: on-failure
     networks:
