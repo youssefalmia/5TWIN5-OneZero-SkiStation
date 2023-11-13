@@ -1,4 +1,4 @@
-package tn.esprit.spring;
+package tn.esprit.spring.CourseTests;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -9,13 +9,12 @@ import tn.esprit.spring.entities.*;
 import tn.esprit.spring.repositories.*;
 import tn.esprit.spring.services.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
-public class CourseServicesJUnitTest {
+public class CourseServicesMockitoTest {
 
     @InjectMocks
     private CourseServicesImpl courseServices;
@@ -31,6 +30,8 @@ public class CourseServicesJUnitTest {
     @Test
     public void testRetrieveAllCourses() {
         List<Course> courses = new ArrayList<>();
+        courses.add(new Course(1L, 1, TypeCourse.COLLECTIVE_CHILDREN, Support.SKI, 100.0f, 60, new HashSet<>()));
+        courses.add(new Course(2L, 2, TypeCourse.INDIVIDUAL, Support.SNOWBOARD, 150.0f, 90, new HashSet<>()));
         when(courseRepository.findAll()).thenReturn(courses);
 
         List<Course> result = courseServices.retrieveAllCourses();
@@ -40,7 +41,7 @@ public class CourseServicesJUnitTest {
 
     @Test
     public void testAddCourse() {
-        Course course = new Course();
+        Course course = new Course(3L, 3, TypeCourse.INDIVIDUAL, Support.SKI, 120.0f, 75, new HashSet<>());
         when(courseRepository.save(course)).thenReturn(course);
 
         Course result = courseServices.addCourse(course);
@@ -50,19 +51,22 @@ public class CourseServicesJUnitTest {
 
     @Test
     public void testUpdateCourse() {
-        Course course = new Course();
-        when(courseRepository.save(course)).thenReturn(course);
+        Course existingCourse = new Course(4L, 1, TypeCourse.COLLECTIVE_ADULT, Support.SNOWBOARD, 100.0f, 60, new HashSet<>());
+        Course updatedCourse = new Course(4L, 2, TypeCourse.COLLECTIVE_ADULT, Support.SNOWBOARD, 150.0f, 90, new HashSet<>());
 
-        Course result = courseServices.updateCourse(course);
+        when(courseRepository.save(updatedCourse)).thenReturn(updatedCourse);
+        when(courseRepository.findById(existingCourse.getNumCourse())).thenReturn(Optional.of(existingCourse));
 
-        assertEquals(course, result);
+        Course result = courseServices.updateCourse(updatedCourse);
+
+        assertEquals(updatedCourse, result);
     }
 
     @Test
     public void testRetrieveCourse() {
-        Long courseId = 1L;
-        Course course = new Course();
-        when(courseRepository.findById(courseId)).thenReturn(java.util.Optional.of(course));
+        Long courseId = 5L;
+        Course course = new Course(5L, 1, TypeCourse.INDIVIDUAL, Support.SKI, 100.0f, 60, new HashSet<>());
+        when(courseRepository.findById(courseId)).thenReturn(Optional.of(course));
 
         Course result = courseServices.retrieveCourse(courseId);
 
