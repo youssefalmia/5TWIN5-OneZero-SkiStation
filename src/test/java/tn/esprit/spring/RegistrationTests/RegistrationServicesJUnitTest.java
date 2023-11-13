@@ -51,7 +51,6 @@ public class RegistrationServicesJUnitTest {
         assertNotNull(result);
         assertEquals(skier, result.getSkier());
     }
-
     @Test
     public void testAddRegistrationAndAssignToSkierSkierNotFound() {
         Long skierId = 1L;
