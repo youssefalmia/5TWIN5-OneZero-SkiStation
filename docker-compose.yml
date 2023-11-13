@@ -8,6 +8,7 @@ services:
       - 3306:3306
     networks:
       - mynetwork
+    command: --bind-address=0.0.0.0  # Add this line to bind to all available network interfaces
     environment:
       - MYSQL_ROOT_PASSWORD=
       - MYSQL_DATABASE=stationSki
