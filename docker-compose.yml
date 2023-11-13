@@ -10,10 +10,10 @@ services:
       - mynetwork
     command: --bind-address=0.0.0.0
     environment:
-      - MYSQL_ROOT_PASSWORD=
+      - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=stationSki
       - MYSQL_USER=root
-      - MYSQL_PASSWORD=
+      - MYSQL_PASSWORD=root
     volumes:
       - /home/mysql/data:/var/lib/mysql
 
