@@ -55,7 +55,6 @@ public class RegistrationServicesJUnitTest {
     public void testAddRegistrationAndAssignToSkierSkierNotFound() {
         Long skierId = 1L;
         when(skierRepository.findById(skierId)).thenReturn(java.util.Optional.empty());
-
         Registration result = registrationServices.addRegistrationAndAssignToSkier(new Registration(), skierId);
         assertNull(result);
     }
