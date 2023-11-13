@@ -52,7 +52,6 @@ public class RegistrationServicesJUnitTest {
 
         assertNotNull(result);
         assertEquals(skier, result.getSkier());
-
     }
 
     @Test
