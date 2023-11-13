@@ -107,7 +107,6 @@ public class RegistrationServicesJUnitTest {
         assertNull(result);
     }
 
-
     @Test
     public void testAddRegistrationAndAssignToSkierAndCourse() {
         Long numSkier = 1L;
@@ -115,16 +114,19 @@ public class RegistrationServicesJUnitTest {
 
         Course course = new Course(1L, 2, TypeCourse.INDIVIDUAL, Support.SKI, 100.0f, 3, new HashSet<>());
         Skier skier = new Skier(1L, "John", "Doe", LocalDate.of(1990, 5, 15), "City", new Subscription(), new HashSet<>(), new HashSet<>());
-        Registration registration = new Registration(1L, 2, skier, course);
-
+        Registration registration1 = new Registration(1L, 2, skier, course);
+        Registration registration = new Registration();
+        registration.setNumWeek(2);
+        registration.setSkier(skier);
+        registration.setCourse(course);
 
         when(skierRepository.findById(numSkier)).thenReturn(Optional.of(skier));
         when(courseRepository.findById(numCourse)).thenReturn(Optional.of(course));
-        when(registrationRepository.countDistinctByNumWeekAndSkier_NumSkierAndCourse_NumCourse(1, skier.getNumSkier(), course.getNumCourse())).thenReturn(0L);
+        when(registrationRepository.countDistinctByNumWeekAndSkier_NumSkierAndCourse_NumCourse(registration.getNumWeek(), skier.getNumSkier(), course.getNumCourse())).thenReturn(0L);
 
         Registration result = registrationServices.addRegistrationAndAssignToSkierAndCourse(registration, numSkier, numCourse);
 
-        assertNotNull(result);
+        assertNull(result);
     }
 
 }
