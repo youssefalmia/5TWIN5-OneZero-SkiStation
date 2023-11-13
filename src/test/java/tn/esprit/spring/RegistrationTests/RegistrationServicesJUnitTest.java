@@ -49,7 +49,6 @@ public class RegistrationServicesJUnitTest {
         when(skierRepository.findById(skierId)).thenReturn(java.util.Optional.ofNullable(skier));
         when(registrationRepository.save(registration)).thenReturn(registration);
         Registration result = registrationServices.addRegistrationAndAssignToSkier(registration, skierId);
-
         assertNotNull(result);
         assertEquals(skier, result.getSkier());
     }
