@@ -1,4 +1,4 @@
-package tn.esprit.spring.dto;
+package tn.esprit.spring.dtow;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
