@@ -177,6 +177,31 @@ public class RegistrationServicesJUnitTest {
     }
 
     @Test
+    public void testAddRegistrationAndAssignToSkierAndCourseSkier16HasCourse() {
+        Long numSkier = 1L;
+        Long numCourse = 2L;
+
+        Course course = new Course(1L, 2, TypeCourse.COLLECTIVE_CHILDREN, Support.SKI, 100.0f, 3, new HashSet<>());
+        Skier skier = new Skier(1L, "John", "Doe", LocalDate.of(2012, 5, 15), "City", new Subscription(), new HashSet<>(), new HashSet<>());
+        Registration registration1 = new Registration(1L, 2, skier, course);
+        Long l=registration1.getNumRegistration();
+        Color c= Color.BLUE;
+        Registration registration = new Registration();
+        registration.setNumWeek(2);
+        registration.setSkier(skier);
+        registration.setCourse(course);
+
+        when(skierRepository.findById(numSkier)).thenReturn(Optional.of(skier));
+        when(courseRepository.findById(numCourse)).thenReturn(Optional.of(course));
+        when(registrationRepository.countDistinctByNumWeekAndSkier_NumSkierAndCourse_NumCourse(registration.getNumWeek(), skier.getNumSkier(), course.getNumCourse())).thenReturn(10L);
+        when(registrationRepository.countByCourseAndNumWeek(course, registration.getNumWeek())).thenReturn(10L);
+
+        Registration result = registrationServices.addRegistrationAndAssignToSkierAndCourse(registration, numSkier, numCourse);
+
+        assertNull(result);
+    }
+
+    @Test
     public void testAddRegistrationAndAssignToSkierAndCourseSkierOld() {
         Long numSkier = 1L;
         Long numCourse = 2L;
