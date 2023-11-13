@@ -177,7 +177,7 @@ public class RegistrationServicesJUnitTest {
     }
 
     @Test
-    public void testAddRegistrationAndAssignToSkierAndCourseSkier16HasCourse() {
+    public void testAddRegistrationAndAssignToSkierAndCourseSkier16HasCourse2() {
         Long numSkier = 1L;
         Long numCourse = 2L;
 
