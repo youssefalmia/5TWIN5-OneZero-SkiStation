@@ -43,6 +43,11 @@ pipeline {
                 }
             }
         }
+        stage('Docker compose') {
+            steps {
+                sh "docker-compose up -d"
+            }
+        }
         stage('Deploy docker image') {
             steps {
                 script {
@@ -52,6 +57,7 @@ pipeline {
                 }
             }
         }
+
         stage('Nexus Deployment') {
             steps {
                 script {
