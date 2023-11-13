@@ -1,22 +1,23 @@
 pipeline {
     agent any
     environment {
-        registry= "fouratbendhafer11/5twin5-onezero-skistation"
-        registryCredential = 'dockerhub'
-        dockerImage = ''
+        registry= "youssefalmia/5twin5-g7-skistation"
+        registryCredential = 'DockerHub'
 
         NEXUS_VERSION = "nexus3"
         NEXUS_PROTOCOL = "http"
-        NEXUS_URL = "http://192.168.1.15:8081"
+        NEXUS_URL = "http://192.168.100.2:8081"
         NEXUS_REPOSITORY = "nexus-repo-skistation"
         NEXUS_CREDENTIAL_ID = "nexus-user-credential"
+
+        dockerImage = ''
     }
     stages{
         stage('Checkout GIT'){
             steps{
                 echo 'Pulling...';
                 git branch: 'master',
-                url: 'https://github.com/youssefalmia/5TWIN5-OneZero-SkiStation';
+                        url: 'https://github.com/youssefalmia/5TWIN5-OneZero-SkiStation';
             }
         }
         stage('MVN package') {
@@ -29,11 +30,25 @@ pipeline {
                 sh 'mvn test'
             }
         }
-        stage('MVN SonarQube') {
+        stage('Code Coverage and SonarQube Analysis') {
+            steps {
+                sh 'mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install'
+                sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=sonar'
+            }
+        }
+        stage('Building Docker image') {
             steps {
                 script {
-                    sh 'mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install'
-                    sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=adminn'
+                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                }
+            }
+        }
+        stage('Deploy docker image') {
+            steps {
+                script {
+                    docker.withRegistry( '', registryCredential ) {
+                        dockerImage.push()
+                    }
                 }
             }
         }
@@ -55,22 +70,6 @@ pipeline {
                 }
             }
         }
-        stage('Building Docker image') {
-            steps {
-                script {
-                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
-                }
-            }
-        }
-        stage('Deploy docker image') {
-            steps {
-                script {
-                    docker.withRegistry( '', registryCredential ) {
-                        dockerImage.push()
-                    }
-                }
-            }
-        }
         stage('Docker compose') {
             steps {
                 sh "docker-compose up -d"
@@ -82,7 +81,24 @@ pipeline {
             }
         }
     }
+    post {
+        success {
+            emailext(
+                    subject: "Pipeline Success: 5TWIN5-OneZero-SkiStation",
+                    body: "Congratulations! The pipeline executed successfully.",
+                    to: "almia.youssef2@gmail.com"
+            )
+        }
+        failure {
+            emailext(
+                    subject: "Pipeline Failure: 5TWIN5-OneZero-SkiStation",
+                    body: "Oops! Something went wrong during the pipeline execution. Please check the Jenkins logs for more details.",
+                    to: "almia.youssef2@gmail.com"
+            )
+        }
+    }
 }
+
 def isSnapshot() {
     return sh(script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout', returnStdout: true).trim().endsWith('-SNAPSHOT')
 }
