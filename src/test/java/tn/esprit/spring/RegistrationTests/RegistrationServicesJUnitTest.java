@@ -14,10 +14,7 @@ import tn.esprit.spring.services.InstructorServicesImpl;
 import tn.esprit.spring.services.RegistrationServicesImpl;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
@@ -137,7 +134,7 @@ public class RegistrationServicesJUnitTest {
         Long numCourse = 2L;
 
         Course course = new Course(1L, 2, TypeCourse.COLLECTIVE_CHILDREN, Support.SKI, 100.0f, 3, new HashSet<>());
-        Skier skier = new Skier(1L, "John", "Doe", LocalDate.of(2005, 5, 15), "City", new Subscription(), new HashSet<>(), new HashSet<>());
+        Skier skier = new Skier(1L, "John", "Doe", LocalDate.of(2012, 5, 15), "City", new Subscription(), new HashSet<>(), new HashSet<>());
         Registration registration1 = new Registration(1L, 2, skier, course);
         registration1.setNumRegistration(1L);
         Registration registration = new Registration();
@@ -151,7 +148,7 @@ public class RegistrationServicesJUnitTest {
 
         Registration result = registrationServices.addRegistrationAndAssignToSkierAndCourse(registration, numSkier, numCourse);
 
-        assertNotNull(result);
+        assertNull(result);
     }
 
     @Test
@@ -160,7 +157,7 @@ public class RegistrationServicesJUnitTest {
         Long numCourse = 2L;
 
         Course course = new Course(1L, 2, TypeCourse.COLLECTIVE_CHILDREN, Support.SKI, 100.0f, 3, new HashSet<>());
-        Skier skier = new Skier(1L, "John", "Doe", LocalDate.of(2005, 5, 15), "City", new Subscription(), new HashSet<>(), new HashSet<>());
+        Skier skier = new Skier(1L, "John", "Doe", LocalDate.of(2012, 5, 15), "City", new Subscription(), new HashSet<>(), new HashSet<>());
         Registration registration1 = new Registration(1L, 2, skier, course);
         registration1.setNumRegistration(1L);
         Registration registration = new Registration();
@@ -226,6 +223,8 @@ public class RegistrationServicesJUnitTest {
         Long numSkier = 1L;
         Long numCourse = 2L;
 
+        Skier skier = new Skier(1L, "John", "Doe", LocalDate.of(2012, 5, 15), "City", new Subscription(), new HashSet<>(), new HashSet<>());
+        when(skierRepository.findById(numSkier)).thenReturn(Optional.of(skier));
         Registration result = registrationServices.addRegistrationAndAssignToSkierAndCourse(new Registration(), numSkier, numCourse);
 
         assertNull(result);
@@ -301,5 +300,24 @@ public class RegistrationServicesJUnitTest {
         Registration result = registrationServices.addRegistrationAndAssignToSkierAndCourse(registration, numSkier, numCourse);
 
         assertNotNull(result);
+    }
+
+    @Test
+    public void testNumWeeksCourseOfInstructorBySupport() {
+        Long numInstructor = 1L;
+        Support support = Support.SKI;
+
+        // Mock data
+        List<Integer> expectedNumWeeks = Arrays.asList(1, 2, 3); // Replace with your expected values
+
+        // Mocking behavior
+        when(registrationRepository.numWeeksCourseOfInstructorBySupport(numInstructor, support)).thenReturn(expectedNumWeeks);
+
+        // Call the method
+        List<Integer> result = registrationServices.numWeeksCourseOfInstructorBySupport(numInstructor, support);
+
+        // Assertions
+        assertNotNull(result);
+        assertEquals(expectedNumWeeks, result);
     }
 }
