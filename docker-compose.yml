@@ -1,21 +1,23 @@
 version: "3"
 services:
-
   mysqldb:
     container_name: mysqldb
-    image: mysql:latest
+    image: mysql/mysql-server:8.0
     restart: unless-stopped
     ports:
       - 3306:3306
+    networks:
+      - mynetwork
     environment:
-      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_ROOT_PASSWORD=
       - MYSQL_DATABASE=stationSki
-
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=
     volumes:
-      - db:/var/lib/mysqldb
+      - /home/mysql/data:/var/lib/mysql
 
   spring_app:
-    image: youssefalmia/5twin5-g7-skistation:latest
+    image: fouratbendhafer11/5twin5-onezero-skistation:latest
     container_name: SkiStation
     restart: on-failure
     networks:
