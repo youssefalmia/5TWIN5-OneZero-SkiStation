@@ -18,7 +18,6 @@ import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 @Getter
 @Setter
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level=AccessLevel.PRIVATE)
