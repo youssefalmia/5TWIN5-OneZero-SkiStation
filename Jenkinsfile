@@ -43,11 +43,6 @@ pipeline {
                 }
             }
         }
-        stage('Docker compose') {
-            steps {
-                sh "docker-compose up -d"
-            }
-        }
         stage('Deploy docker image') {
             steps {
                 script {
@@ -57,7 +52,6 @@ pipeline {
                 }
             }
         }
-
         stage('Nexus Deployment') {
             steps {
                 script {
@@ -74,6 +68,11 @@ pipeline {
                         error("Maven deploy failed: ${e.message}")
                     }
                 }
+            }
+        }
+        stage('Docker compose') {
+            steps {
+                sh "docker-compose up -d"
             }
         }
         stage('Cleaning up') {
