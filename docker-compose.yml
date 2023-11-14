@@ -15,8 +15,8 @@ services:
       - MYSQL_ROOT_HOST="%"
       - MYSQL_PASSWORD=pwd
 
-    volumes:
-      - /home/mysql/data:/var/lib/mysql
+#    volumes:
+#      - /home/mysql/data:/var/lib/mysql
 
   spring_app:
     image: youssefalmia/5twin5-g7-skistation:latest
