@@ -2,7 +2,7 @@ version: "3"
 services:
   mysqldb:
     container_name: mysqldb
-    image: mysql:8.0
+    image: mysql/mysql-server:8.0
     restart: unless-stopped
     ports:
       - 3306:3306
@@ -12,10 +12,11 @@ services:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=stationSki
       - MYSQL_USER=user
-      - MYSQL_PASSWORD=pwd
       - MYSQL_ROOT_HOST="%"
-#    volumes:
-#      - /home/mysql/data:/var/lib/mysql
+      - MYSQL_PASSWORD=pwd
+
+    volumes:
+      - /home/mysql/data:/var/lib/mysql
 
   spring_app:
     image: youssefalmia/5twin5-g7-skistation:latest
