@@ -25,61 +25,61 @@ pipeline {
                 sh 'mvn -DskipTests clean package'
             }
         }
-//        stage('Unit Tests') {
-//            steps {
-//                sh 'mvn test'
-//            }
-//        }
-//        stage('Code Coverage and SonarQube Analysis') {
-//            steps {
-//                sh 'mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install'
-//                sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=sonar'
-//            }
-//        }
-//        stage('Building Docker image') {
-//            steps {
-//                script {
-//                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
-//                }
-//            }
-//        }
-//        stage('Deploy docker image') {
-//            steps {
-//                script {
-//                    docker.withRegistry( '', registryCredential ) {
-//                        dockerImage.push()
-//                    }
-//                }
-//            }
-//        }
-//        stage('Nexus Deployment') {
-//            steps {
-//                script {
-//                    def repositoryUrl = ''
-//                    if (isSnapshot()) {
-//                        repositoryUrl = "${NEXUS_URL}/repository/maven-snapshots/"
-//                    } else {
-//                        repositoryUrl = "${NEXUS_URL}/repository/maven-releases/"
-//                    }
-//                    try {
-//                        sh "mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::${repositoryUrl}"
-//                    } catch (Exception e) {
-//                        currentBuild.result = 'FAILURE'
-//                        error("Maven deploy failed: ${e.message}")
-//                    }
-//                }
-//            }
-//        }
+        stage('Unit Tests') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+        stage('Code Coverage and SonarQube Analysis') {
+            steps {
+                sh 'mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install'
+                sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=sonar'
+            }
+        }
+        stage('Building Docker image') {
+            steps {
+                script {
+                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                }
+            }
+        }
+        stage('Deploy docker image') {
+            steps {
+                script {
+                    docker.withRegistry( '', registryCredential ) {
+                        dockerImage.push()
+                    }
+                }
+            }
+        }
+        stage('Nexus Deployment') {
+            steps {
+                script {
+                    def repositoryUrl = ''
+                    if (isSnapshot()) {
+                        repositoryUrl = "${NEXUS_URL}/repository/maven-snapshots/"
+                    } else {
+                        repositoryUrl = "${NEXUS_URL}/repository/maven-releases/"
+                    }
+                    try {
+                        sh "mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::${repositoryUrl}"
+                    } catch (Exception e) {
+                        currentBuild.result = 'FAILURE'
+                        error("Maven deploy failed: ${e.message}")
+                    }
+                }
+            }
+        }
         stage('Docker compose') {
             steps {
                 sh "docker-compose up -d"
             }
         }
-//        stage('Cleaning up') {
-//            steps {
-//                sh "docker rmi $registry:$BUILD_NUMBER"
-//            }
-//        }
+        stage('Cleaning up') {
+            steps {
+                sh "docker rmi $registry:$BUILD_NUMBER"
+            }
+        }
     }
     post {
         success {
