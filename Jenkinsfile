@@ -13,18 +13,18 @@ pipeline {
         dockerImage = ''
     }
     stages{
-//        stage('Checkout GIT'){
-//            steps{
-//                echo 'Pulling...';
-//                git branch: 'master',
-//                        url: 'https://github.com/youssefalmia/5TWIN5-OneZero-SkiStation';
-//            }
-//        }
-//        stage('MVN package') {
-//            steps {
-//                sh 'mvn -DskipTests clean package'
-//            }
-//        }
+        stage('Checkout GIT'){
+            steps{
+                echo 'Pulling...';
+                git branch: 'master',
+                        url: 'https://github.com/youssefalmia/5TWIN5-OneZero-SkiStation';
+            }
+        }
+        stage('MVN package') {
+            steps {
+                sh 'mvn -DskipTests clean package'
+            }
+        }
 //        stage('Unit Tests') {
 //            steps {
 //                sh 'mvn test'
